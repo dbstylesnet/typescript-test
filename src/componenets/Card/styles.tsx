@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-const CardStyles = styled.button`
+const CardStyles = styled.div`
     color: white;
     width: 200px;
     padding: 15px;

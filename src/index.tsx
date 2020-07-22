@@ -3,11 +3,15 @@ import ReactDOM from 'react-dom';
 import GlobalStyle from './GlobalStyle'; 
 import * as serviceWorker from './serviceWorker';
 import GameProvider from './pages/GamePage/GameProvider';
+import { ApolloProvider } from  '@apollo/client'
+import { client } from './consts'
 
 ReactDOM.render(
   <React.StrictMode>
-    <GlobalStyle />
-    <GameProvider />
+    <ApolloProvider client={client}>
+      <GlobalStyle />
+      <GameProvider />
+    </ApolloProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

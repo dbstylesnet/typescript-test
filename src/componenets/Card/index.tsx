@@ -5,24 +5,19 @@ interface Props{
     cardType: string,
     attribute: string,
     attrValue: number,
-    value: number,
-    onClick?: (event: React.MouseEvent<HTMLInputElement>) => void,
+    player: string,
+    funcThatUpdates?: (x: any) => any,
 }
 
-// export type EventHandlerProps = {
-//     onClick: (e: React.MouseEvent) => void
-// }
-
-
-
-const Card = (props: Props, ) => {
-    function setCnt(cnt: number) {
-        
-    } 
-
+const Card = (props: Props) => {
     return <CardStyles>
-        <input onClick={event => props.onClick(event.target.value)}>{props.cardType}</input>
-        {props.attribute}: {props.attrValue}
+        <span onClick={props.funcThatUpdates}>
+        Player {props.player}
+        <br></br>
+        Card: {props.cardType}
+        <br></br>
+        {props.attribute}: {props.attrValue ? props.attrValue : '?'}
+        </span>
     </CardStyles>
 }
 

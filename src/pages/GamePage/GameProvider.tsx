@@ -1,19 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import GamePage from './styles';
-import Query from '../../componenets/query'
+import { useQuery } from '@apollo/client'
+import { GRAPHQL_API, GET_ALL_STARSHIPS } from '../../consts'
 import Card from '../../componenets/Card'
 
 
 const GameProvider = () => {
     const [scores, setScores] = useState<[]>([])
-    const [playing, setPlaying] = useState<boolean>(false)
+    const [playing, setPlaying] = useState<boolean>(true)
     const [scoreI, setScoreI] = useState<number>(0)
     const [scoreII, setScoreII] = useState<number>(0)
     const [playerITurn, setPlayerITurn] = useState<boolean>(true)
-    const [currentICards, setCurrentICards] = useState<[]>([])
+    const [currentICards, setCurrentICards] = useState<Array<number>>([])
     const [currentIICards, setCurrentIICards] = useState<[]>([])
     const [chosenCard, setChosenCard] = useState<[]>([]) 
-    const [count, setCount] = useState<number>()
+
+    const updFun = () => {
+        setCurrentICards([2, 10])
+    }
+
+    useEffect(() => {
+        const fetchStarships = () => {
+            // const queryResult - await axios.post
+        }
+    })
+
 
     return (
         <GamePage>
@@ -36,21 +47,14 @@ const GameProvider = () => {
 
             <div className="cards">
                 <div className="left">
-                    <Card cardType="Person" attribute="Height" attrValue={92} value={92} onClick={(value) => setCount(value)} />
-                    <Card cardType="Starship" attribute="Drive" attrValue={1} />
+                    <Card cardType="Person" attribute="Height" attrValue={92} player={'I'} funcThatUpdates={updFun} />
+                    <Card cardType="Starship" attribute="Drive" attrValue={1} player={'I'} funcThatUpdates={updFun} />
                 </div>
                 <div className="right">
-                    <Card cardType="Person" attribute="Height" attrValue={54} />
-                    <Card cardType="Starship" attribute="Drive" attrValue={2} />
+                    <Card cardType="Person" attribute="Height" attrValue={0} player={'II'} funcThatUpdates={updFun} />
+                    <Card cardType="Starship" attribute="Drive" attrValue={0} player={'II'} funcThatUpdates={updFun} />
                 </div>
             </div>
-
-            Count: {count}
-
-            <button onClick={() => setCount(1)}>-</button>
-            <button onClick={() => setCount(2)}>+</button>
-
-            <Query />
 
             {playing  
                 ? `Player ${playerITurn ? 'I' : 'II'} chooses card` 
