@@ -4,6 +4,10 @@ import { useQuery } from '@apollo/client'
 import { GRAPHQL_API, GET_ALL_STARSHIPS } from '../../consts'
 import Card from '../../componenets/Card'
 
+interface StarShipProps {
+    id: string,
+    hyperdriveRating: number,
+}
 
 const GameProvider = () => {
     const [scores, setScores] = useState<[]>([])
@@ -25,13 +29,18 @@ const GameProvider = () => {
         }
     })
 
+    const { loading, error, data } = useQuery(GET_ALL_STARSHIPS)
+
+    if (loading) return <p>Loading</p>
+    if (error) return <p>Error</p>
+
 
     return (
         <GamePage>
             <header className="header">
                 Top Trumps
             </header>
-            <div className='score'>
+            <div className="score">
                 <div className="title">Score:</div>
                 <ul>
                     <li>I: 0</li>
@@ -47,14 +56,18 @@ const GameProvider = () => {
 
             <div className="cards">
                 <div className="left">
-                    <Card cardType="Person" attribute="Height" attrValue={92} player={'I'} funcThatUpdates={updFun} />
-                    <Card cardType="Starship" attribute="Drive" attrValue={1} player={'I'} funcThatUpdates={updFun} />
+                    <Card cardType="Person" attribute="Height" attrValue={92} player={"I"} funcThatUpdates={updFun} />
+                    <Card cardType="Starship" attribute="Drive" attrValue={1} player={"I"} funcThatUpdates={updFun} />
                 </div>
                 <div className="right">
-                    <Card cardType="Person" attribute="Height" attrValue={0} player={'II'} funcThatUpdates={updFun} />
-                    <Card cardType="Starship" attribute="Drive" attrValue={0} player={'II'} funcThatUpdates={updFun} />
+                    <Card cardType="Person" attribute="Height" attrValue={0} player={"II"} funcThatUpdates={updFun} />
+                    <Card cardType="Starship" attribute="Drive" attrValue={0} player={"II"} funcThatUpdates={updFun} />
                 </div>
             </div>
+
+            {data.allStarships.map( (starship: StarShipProps) => (
+                <div key="id">{starship.id}: {starship.hyperdriveRating}</div>
+            ))}
 
             {playing  
                 ? `Player ${playerITurn ? 'I' : 'II'} chooses card` 
