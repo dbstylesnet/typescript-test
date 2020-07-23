@@ -9,6 +9,7 @@ interface Starship {
     index: number,
     name: string,
     hyperdriveRating: number,
+    winner?: string,
 }
 
 interface People {
@@ -16,13 +17,13 @@ interface People {
     index: number,
     name: string,
     height: number,
+    winner?: string,
 }
 
 interface GameState {
     scores?: number[],
     scoreI?: number,
     scoreII?: number,
-    playing?: boolean,
     playerITurn?: boolean,
 }
 
@@ -40,30 +41,33 @@ const Game: React.FC<GameProps> = ({}) => {
             scores: [],
             scoreI: 0,
             scoreII: 0,
-            playing: false,
             playerITurn: true,
         }
     ) 
     
-    const clickedGame = useCallback(e => {
+    const startOver = useCallback(e => {
         setGameState({
-            ...gameState,
             scores: [],
-            playing: false,
-            playerITurn: false 
+            scoreI: 0,
+            scoreII: 0,
+            playerITurn: true,
         })
-        console.log(gameState.scores)
-        console.log('re-rendered component')
     }, [])
-
-    const updFun = () => {
+    
+    const playerIWins = () => {
         setGameState({
             ...gameState,
             scores: [1,2,1,1,2],
-            playing: false,
             playerITurn: true, 
         })
-        console.log('re-rendered component')
+    }
+
+    const playerIIWins = () => {
+        setGameState({
+            ...gameState,
+            scores: [1,2,1,1,2],
+            playerITurn: false, 
+        })
     }
     
     
@@ -73,9 +77,8 @@ const Game: React.FC<GameProps> = ({}) => {
     
     
     const Buttonn:React.FC<BtnProps> = React.memo(({ callback }) => (
-        <button onClick={callback}>
-            Player II turn
-            {console.log('re-render btn')}
+        <button onClick={startOver}>
+            Start Again
         </button>
     ))
 
@@ -89,13 +92,13 @@ const Game: React.FC<GameProps> = ({}) => {
         .slice()
         .sort(()=> 0.5 - Math.random())
         .slice(0, 2)
-        .map((starship: Starship) => ({...starship, index:i++}))
+        .map((starship: Starship) => ({...starship, index:i++, winner: "yes"}))
 
     const allPeople = data.allPersons
         .slice()
         .sort(()=> 0.5 - Math.random())
         .slice(0, 2)
-        .map((people: People) => ({...people, index:j++}))
+        .map((people: People) => ({...people, index:j++, winner: "no"}))
         
     return (
         <GamePage>
@@ -123,13 +126,15 @@ const Game: React.FC<GameProps> = ({}) => {
                 .map((starship: Starship) => (
                     <div key={starship.id} className="starships"> 
                         <Card
+                            winner={starship.winner}
+                            playerIWins={playerIWins}
+                            playerIIWins={playerIIWins}
                             playerITurn={gameState.playerITurn}
                             cardType="Starship" 
                             attribute="Drive" 
                             name={starship.name} 
                             attrValue={starship.hyperdriveRating} 
                             player={starship.index} 
-                            funcThatUpdates={updFun} 
                         />
                     </div>
                 )
@@ -142,18 +147,17 @@ const Game: React.FC<GameProps> = ({}) => {
             <div className="cards-container">
             {allPeople
                 .map((people: People) => (
-                    <div 
-                        key={people.id} 
-                        className="people"
-                    > 
+                    <div key={people.id} className="people"> 
                         <Card
+                            winner={people.winner}
+                            playerIWins={playerIWins}
+                            playerIIWins={playerIIWins}
                             playerITurn={gameState.playerITurn}
                             cardType="People" 
                             attribute="Height" 
                             name={people.name} 
                             attrValue={people.height} 
                             player={people.index}
-                            funcThatUpdates={updFun} 
                         />
                     </div>
                 )
@@ -162,14 +166,12 @@ const Game: React.FC<GameProps> = ({}) => {
             
             <div><h2>{`Player ${gameState.playerITurn ? 'I': 'II'} chooses card`}</h2></div>
 
+            <Buttonn callback={(startOver)} />
 
-            <Buttonn callback={(clickedGame)} />
-
-            <button onClick={clickedGame}>
+            {/* <button onClick={clickedGame}>
                 Clicked game
-            </button>
+            </button> */}
             <div></div>
-            <div>playerITurn: {gameState.playerITurn ? 'Yes' : 'No'}</div>
         </GamePage>
     );
 }

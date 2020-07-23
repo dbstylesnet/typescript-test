@@ -9,12 +9,15 @@ interface PlayerProps{
     name: string,
     id?: string,
     player: number,
+    winner?: string,
+    playerIWins?: (x: any) => any,
+    playerIIWins?: (x: any) => any,
     funcThatUpdates?: (x: any) => any,
 }
 
 const Card = (props: PlayerProps) => {
     return <CardStyles>
-        <span onClick={props.funcThatUpdates}>
+        <span onClick={props.player === 1 ? props.playerIWins : props.playerIIWins}>
             Player {props.player === 1 ? 'I' : 'II'}
             <div></div>
             Name: {props.name}
