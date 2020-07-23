@@ -41,21 +41,13 @@ const Game: React.FC<GameProps> = ({}) => {
             scoreI: 0,
             scoreII: 0,
             playing: false,
-            playerITurn: false
+            playerITurn: true,
         }
     ) 
     
-    const updFun = () => {
-        setGameState({
-            scores: [],
-            playing: false,
-            playerITurn: false 
-        })
-        console.log('re-rendered component')
-    }
-    
     const clickedGame = useCallback(e => {
         setGameState({
+            ...gameState,
             scores: [],
             playing: false,
             playerITurn: false 
@@ -63,6 +55,17 @@ const Game: React.FC<GameProps> = ({}) => {
         console.log(gameState.scores)
         console.log('re-rendered component')
     }, [])
+
+    const updFun = () => {
+        setGameState({
+            ...gameState,
+            scores: [1,2,1,1,2],
+            playing: false,
+            playerITurn: true, 
+        })
+        console.log('re-rendered component')
+    }
+    
     
     useEffect(() => {
         console.log(gameState.scores)
@@ -115,10 +118,12 @@ const Game: React.FC<GameProps> = ({}) => {
 
             <div>Starships</div>
             <div className="cards-container">
+                {console.log(gameState.playerITurn)}
             {allStarships
                 .map((starship: Starship) => (
                     <div key={starship.id} className="starships"> 
                         <Card
+                            playerITurn={gameState.playerITurn}
                             cardType="Starship" 
                             attribute="Drive" 
                             name={starship.name} 
@@ -142,6 +147,7 @@ const Game: React.FC<GameProps> = ({}) => {
                         className="people"
                     > 
                         <Card
+                            playerITurn={gameState.playerITurn}
                             cardType="People" 
                             attribute="Height" 
                             name={people.name} 
@@ -154,7 +160,7 @@ const Game: React.FC<GameProps> = ({}) => {
             )}
             </div>
             
-            <div >{`Player ${gameState.playing ? 'I': 'II'} chooses card`}
+            <div >{`Player ${gameState.playerITurn ? 'I': 'II'} chooses card`}
             Player I wins, choose the card
             </div>
 

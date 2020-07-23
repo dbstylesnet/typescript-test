@@ -1,7 +1,8 @@
 import React from 'react'
-import CardStyles from './styles'
+import CardStyles from './styles'   
 
 interface PlayerProps{
+    playerITurn?: boolean, 
     cardType: string,
     attribute: string,
     attrValue: number,
@@ -12,13 +13,19 @@ interface PlayerProps{
 }
 
 const Card = (props: PlayerProps) => {
-    return <CardStyles className={props.player === 1 ? 'left' : 'right'}>
+    return <CardStyles>
         <span onClick={props.funcThatUpdates}>
-        Player {props.player === 1 ? 'I' : 'II'}
-        <div></div>
-        Name: {props.name}
-        <div></div>
-        {props.attribute}: {props.attrValue ? props.attrValue : '?'}
+            Player {props.player === 1 ? 'I' : 'II'}
+            <div></div>
+            Name: {props.name}
+            <div></div>
+            {props.attribute}: 
+            {props.playerITurn && props.player === 1 ? 
+                props.attrValue : 
+                    !props.playerITurn && props.player === 2 ? 
+                        props.attrValue :
+                        '?'
+            }
         </span>
     </CardStyles>
 }
