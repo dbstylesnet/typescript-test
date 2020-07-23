@@ -19,8 +19,10 @@ interface People {
 }
 
 interface GameState {
-    scoress?: number[],
-    playingg?: boolean,
+    scores?: number[],
+    scoreI?: number,
+    scoreII?: number,
+    playing?: boolean,
     playerITurn?: boolean,
 }
 
@@ -33,42 +35,43 @@ type BtnProps = {
 
 const Game: React.FC<GameProps> = ({}) => {
     const { loading, error, data } = useQuery(GET_STARSHIPS_AND_PEOPLE)
-    const [scores, setScores] = useState<[]>([])
-    const [playing, setPlaying] = useState<boolean>(true)
-    const [results, setResults] = useState<boolean>(true)
-    const [scoreI, setScoreI] = useState<number>(0)
-    const [scoreII, setScoreII] = useState<number>(0)
-    const [playerITurn, setPlayerITurn] = useState<boolean>(true)
-    const [playerIITurn, setPlayerIITurn] = useState<boolean>(false)
-    const [currentICards, setCurrentICards] = useState<number[]>([])
-    const [currentIICards, setCurrentIICards] = useState<[]>([])
-    const [chosenCard, setChosenCard] = useState<[]>([]) 
-    // const [gameState, setGameState] = useState<GameProps>(
-        //     [
-    //         scoress: [],
-    //         playingg: false,
-    //     ]
-    // ) 
+    const [gameState, setGameState] = useState<GameState>(
+        { 
+            scores: [],
+            scoreI: 0,
+            scoreII: 0,
+            playing: false,
+            playerITurn: false
+        }
+    ) 
     
     const updFun = () => {
-        setCurrentICards([2, 10])
-        console.log('re-render')
+        setGameState({
+            scores: [],
+            playing: false,
+            playerITurn: false 
+        })
+        console.log('re-rendered component')
     }
     
     const clickedGame = useCallback(e => {
-        setCurrentICards([2, 10])
-        console.log('re-render')
+        setGameState({
+            scores: [],
+            playing: false,
+            playerITurn: false 
+        })
+        console.log(gameState.scores)
+        console.log('re-rendered component')
     }, [])
     
     useEffect(() => {
-        
-        // setCurrentIICards(shufld)
-    })
+        console.log(gameState.scores)
+    },[])
     
     
     const Buttonn:React.FC<BtnProps> = React.memo(({ callback }) => (
         <button onClick={callback}>
-            Clicked memo game
+            Clicked memo button
             {console.log('re-render btn')}
         </button>
     ))
@@ -79,15 +82,18 @@ const Game: React.FC<GameProps> = ({}) => {
 
     let i:number = 1, j:number = 1
 
-
     const allStarships = data.allStarships
-    .slice()
-    .sort(()=> 0.5 - Math.random())
-    .slice(0, 2)
-    .map((starship: Starship) => ({...starship, index:i++}))
+        .slice()
+        .sort(()=> 0.5 - Math.random())
+        .slice(0, 2)
+        .map((starship: Starship) => ({...starship, index:i++}))
 
-    
-
+    const allPeople = data.allPersons
+        .slice()
+        .sort(()=> 0.5 - Math.random())
+        .slice(0, 2)
+        .map((people: People) => ({...people, index:j++}))
+        
     return (
         <GamePage>
             <header className="header">
@@ -96,8 +102,8 @@ const Game: React.FC<GameProps> = ({}) => {
             <div className="score">
                 <div className="title">Score:</div>
                 <ul>
-                    <li>I: {scoreI}</li>
-                    <li>II: {scoreII}</li>
+                    <li>I: {gameState.scoreI}</li>
+                    <li>II: {gameState.scoreII}</li>
                 </ul>
             </div>
             <div className="players">
@@ -129,11 +135,7 @@ const Game: React.FC<GameProps> = ({}) => {
                     
             <div>People</div>
             <div className="cards-container">
-            {data.allPersons
-                .slice()
-                .sort(()=> 0.5 - Math.random())
-                .slice(0, 2)
-                .map((people: People) => ({...people, index:j++}))
+            {allPeople
                 .map((people: People) => (
                     <div 
                         key={people.id} 
@@ -151,15 +153,11 @@ const Game: React.FC<GameProps> = ({}) => {
                 )
             )}
             </div>
-            {/* playerITurn && !playerIITurn  */}
             
-            <div >{`Player ${playing ? 'I': 'II'} chooses card`}
+            <div >{`Player ${gameState.playing ? 'I': 'II'} chooses card`}
             Player I wins, choose the card
             </div>
 
-            <button onClick={() => setPlaying(false)}>
-                Next turn
-            </button>
 
             <Buttonn callback={(clickedGame)} />
 
@@ -168,16 +166,10 @@ const Game: React.FC<GameProps> = ({}) => {
             </button>
 
 
-            <div>Score: {scores}</div>
-            <div>results: {results}</div>
-            <div>scoreI: {scoreI}</div>
-            <div>scoreII: {scoreII}</div>
-            <div>playerITurn: {playerITurn ? 'Yes' : 'No'}</div>
-            <div>playerIITurn: {playerIITurn ? 'Yes' : 'No'}</div>
-            <div>currentICards: {currentICards}</div>
-            <div>currentIICards: {currentIICards}</div>
-            <div>chosenCard: {chosenCard}</div>
-
+            <div>Score: {gameState.scores}</div>
+            <div>scoreI: {gameState.scoreI}</div>
+            <div>scoreII: {gameState.scoreII}</div>
+            <div>playerITurn: {gameState.playerITurn ? 'Yes' : 'No'}</div>
         </GamePage>
     );
 }
