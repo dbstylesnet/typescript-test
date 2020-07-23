@@ -60,6 +60,14 @@ const GamePage = styled.div`
             width: 50%;
         }
     }
+
+    .cards-container {
+        display: flex;
+        width: 100%;
+        div {
+            flex: 1;
+        }
+    }
 `
 
 export default GamePage

@@ -1,21 +1,23 @@
 import React from 'react'
 import CardStyles from './styles'
 
-interface Props{
+interface PlayerProps{
     cardType: string,
     attribute: string,
     attrValue: number,
-    player: string,
+    name: string,
+    id?: string,
+    player: number,
     funcThatUpdates?: (x: any) => any,
 }
 
-const Card = (props: Props) => {
-    return <CardStyles>
+const Card = (props: PlayerProps) => {
+    return <CardStyles className={props.player === 1 ? 'left' : 'right'}>
         <span onClick={props.funcThatUpdates}>
-        Player {props.player}
-        <br></br>
-        Card: {props.cardType}
-        <br></br>
+        Player {props.player === 1 ? 'I' : 'II'}
+        <div></div>
+        Name: {props.name}
+        <div></div>
         {props.attribute}: {props.attrValue ? props.attrValue : '?'}
         </span>
     </CardStyles>

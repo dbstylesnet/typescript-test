@@ -11,12 +11,15 @@ const GlobalStyle = createGlobalStyle`
         background-color: #282c34;
         color: white;
         text-align: center;
-      }
+    }
       
-      code {
-        font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-          monospace;
-    }      
+    code {
+        font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+    }
+    
+    button {
+        color: white;
+    }
 `
 
 export default GlobalStyle

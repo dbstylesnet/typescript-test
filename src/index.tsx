@@ -2,15 +2,22 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import GlobalStyle from './GlobalStyle'; 
 import * as serviceWorker from './serviceWorker';
-import GameProvider from './pages/GamePage/GameProvider';
+import Game from './pages/Game'
+import History from './pages/History'
 import { ApolloProvider } from  '@apollo/client'
-import { client } from './consts'
+import { CLIENT } from './consts'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 ReactDOM.render(
   <React.StrictMode>
-    <ApolloProvider client={client}>
+    <ApolloProvider client={CLIENT}>
       <GlobalStyle />
-      <GameProvider />
+      <Router>
+        <Switch>
+          <Route path="/" exact component={Game} />
+          <Route path="/history" component={History} />
+        </Switch>
+      </Router>
     </ApolloProvider>
   </React.StrictMode>,
   document.getElementById('root')
