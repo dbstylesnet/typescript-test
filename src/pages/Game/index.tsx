@@ -74,7 +74,7 @@ const Game: React.FC<GameProps> = ({}) => {
     
     const Buttonn:React.FC<BtnProps> = React.memo(({ callback }) => (
         <button onClick={callback}>
-            Clicked memo button
+            Player II turn
             {console.log('re-render btn')}
         </button>
     ))
@@ -160,9 +160,7 @@ const Game: React.FC<GameProps> = ({}) => {
             )}
             </div>
             
-            <div >{`Player ${gameState.playerITurn ? 'I': 'II'} chooses card`}
-            Player I wins, choose the card
-            </div>
+            <div><h2>{`Player ${gameState.playerITurn ? 'I': 'II'} chooses card`}</h2></div>
 
 
             <Buttonn callback={(clickedGame)} />
@@ -170,11 +168,7 @@ const Game: React.FC<GameProps> = ({}) => {
             <button onClick={clickedGame}>
                 Clicked game
             </button>
-
-
-            <div>Score: {gameState.scores}</div>
-            <div>scoreI: {gameState.scoreI}</div>
-            <div>scoreII: {gameState.scoreII}</div>
+            <div></div>
             <div>playerITurn: {gameState.playerITurn ? 'Yes' : 'No'}</div>
         </GamePage>
     );
