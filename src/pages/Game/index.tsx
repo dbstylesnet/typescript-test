@@ -1,179 +1,181 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import GamePage from './styles';
 import { useQuery } from '@apollo/client'
 import { GET_STARSHIPS_AND_PEOPLE } from '../../consts'
 import Card from '../../componenets/Card'
+import Header from '../../componenets/Header'
+import Button from '../../componenets/Button'
 
 interface Starship {
     id: string,
-    index: number,
     name: string,
     hyperdriveRating: number,
-    winner?: string,
 }
 
-interface People {
+interface Persons {
     id: string,
-    index: number,
     name: string,
     height: number,
-    winner?: string,
 }
 
 interface GameState {
-    scores?: number[],
-    scoreI?: number,
-    scoreII?: number,
-    playerITurn?: boolean,
+    scores: string[],
+    scoreI: number,
+    scoreII: number,
+    isPlayerITurn: boolean,
+    isTurnStarted: boolean,
+    starships: Starship[],
+    persons: Persons[],
 }
 
 type GameProps = {}
 
-type BtnProps = {
-    callback?: any
-}
 
-
-const Game: React.FC<GameProps> = ({}) => {
+const Game: React.FC<GameProps> = () => {
     const { loading, error, data } = useQuery(GET_STARSHIPS_AND_PEOPLE)
     const [gameState, setGameState] = useState<GameState>(
         { 
             scores: [],
             scoreI: 0,
             scoreII: 0,
-            playerITurn: true,
+            isPlayerITurn: true,
+            isTurnStarted: false,
+            starships: [],
+            persons: [],
         }
     ) 
-    
-    const startOver = useCallback(e => {
+
+    const onTurnStart = () => {
+        const assignedStarships = data.allStarships
+            .slice()
+            .sort(()=> 0.5 - Math.random())
+            .slice(0, 2)
+
+        const assignedPersons = data.allPersons
+            .slice()
+            .sort(()=> 0.5 - Math.random())
+            .slice(0, 2)
+
+        setGameState({
+            ...gameState,
+            isTurnStarted: true,
+            starships: assignedStarships,
+            persons: assignedPersons,
+        })
+    }
+
+    const startOver = () => {
         setGameState({
             scores: [],
             scoreI: 0,
             scoreII: 0,
-            playerITurn: true,
-        })
-    }, [])
-    
-    const playerIWins = () => {
-        setGameState({
-            ...gameState,
-            scores: [1,2,1,1,2],
-            playerITurn: true, 
+            isPlayerITurn: true,
+            isTurnStarted: false,
+            starships: [],
+            persons: [],
         })
     }
 
-    const playerIIWins = () => {
+    const onStarshipClick = () => {
+        const attributeValueI = gameState.starships ? gameState.starships[0].hyperdriveRating : 0
+        const attributeValueII = gameState.starships ? gameState.starships[1].hyperdriveRating : 0
+        const winner = attributeValueI > attributeValueII ? "I" : (attributeValueI < attributeValueII ? "II" : "D")
+        const scores = gameState.scores ? gameState.scores.slice() : []
+        const scoreI = gameState.scoreI ? gameState.scoreI : 0
+        const scoreII = gameState.scoreII ? gameState.scoreII : 0
+        scores.push(winner)
+
         setGameState({
             ...gameState,
-            scores: [1,2,1,1,2],
-            playerITurn: false, 
+            scores,
+            scoreI: winner === 'I' ? scoreI + 1 : scoreI,
+            scoreII: winner === 'II' ? scoreII + 1 : scoreII,
+            isPlayerITurn: winner === "I" || (winner === "D" && gameState.isPlayerITurn),
+            isTurnStarted: false,
         })
     }
-    
-    
-    useEffect(() => {
-        console.log(gameState.scores)
-    },[])
-    
-    
-    const Buttonn:React.FC<BtnProps> = React.memo(({ callback }) => (
-        <button onClick={startOver}>
-            Start Again
-        </button>
-    ))
 
+    const onPersonClick = () => {
+        const attributeValueI = gameState.persons ? gameState.persons[0].height : 0
+        const attributeValueII = gameState.persons ? gameState.persons[1].height : 0
+        const winner = attributeValueI > attributeValueII ? "I" : (attributeValueI < attributeValueII ? "II" : "D")
+        const scores = gameState.scores ? gameState.scores.slice() : []
+        const scoreI = gameState.scoreI ? gameState.scoreI : 0
+        const scoreII = gameState.scoreII ? gameState.scoreII : 0
+        scores.push(winner)
+
+        setGameState({
+            ...gameState,
+            scores,
+            scoreI: winner === "I" ? scoreI + 1 : scoreI,
+            scoreII: winner === "II" ? scoreII + 1 : scoreII,
+            isPlayerITurn: winner === "I" || (winner === "D" && gameState.isPlayerITurn),
+            isTurnStarted: false,
+        })
+    }
 
     if (loading) return <p>Loading</p>
     if (error) return <p>Error</p>
-
-    let i:number = 1, j:number = 1
-
-    const allStarships = data.allStarships
-        .slice()
-        .sort(()=> 0.5 - Math.random())
-        .slice(0, 2)
-        .map((starship: Starship) => ({...starship, index:i++, winner: "yes"}))
-
-    const allPeople = data.allPersons
-        .slice()
-        .sort(()=> 0.5 - Math.random())
-        .slice(0, 2)
-        .map((people: People) => ({...people, index:j++, winner: "no"}))
         
     return (
         <GamePage>
-            <header className="header">
-                Top Trumps
-            </header>
-            <div className="score">
-                <div className="title">Score:</div>
-                <ul>
-                    <li>I: {gameState.scoreI}</li>
-                    <li>II: {gameState.scoreII}</li>
-                </ul>
-            </div>
-            <div className="players">
-                <ul>
-                    <li>Player I</li>
-                    <li>Player II</li>
-                </ul>
-            </div>
-
-            <div>Starships</div>
+            <Header 
+                scoreI={gameState.scoreI ? gameState.scoreI : 0} 
+                scoreII={gameState.scoreII ? gameState.scoreII : 0} 
+            />
+            
+            {gameState.starships.length ? <div>Starships</div> : ''}
             <div className="cards-container">
-                {console.log(gameState.playerITurn)}
-            {allStarships
-                .map((starship: Starship) => (
+            {gameState.starships && gameState.starships
+                .map((starship: Starship, index:number) => (
                     <div key={starship.id} className="starships"> 
                         <Card
-                            winner={starship.winner}
-                            playerIWins={playerIWins}
-                            playerIIWins={playerIIWins}
-                            playerITurn={gameState.playerITurn}
+                            onCardClick={onStarshipClick}
+                            playerITurn={gameState.isPlayerITurn}
+                            isTurnStarted={gameState.isTurnStarted}
                             cardType="Starship" 
                             attribute="Drive" 
                             name={starship.name} 
-                            attrValue={starship.hyperdriveRating} 
-                            player={starship.index} 
+                            attrValue={starship.hyperdriveRating}
+                            player={index}
                         />
                     </div>
                 )
             )}
             </div>
-
-            <div></div>
                     
-            <div>People</div>
+            {gameState.persons.length ? <div>Persons</div> : ''}
             <div className="cards-container">
-            {allPeople
-                .map((people: People) => (
-                    <div key={people.id} className="people"> 
+            {gameState.persons && gameState.persons
+                .map((persons: Persons, index:number) => (
+                    <div key={persons.id} className="persons"> 
                         <Card
-                            winner={people.winner}
-                            playerIWins={playerIWins}
-                            playerIIWins={playerIIWins}
-                            playerITurn={gameState.playerITurn}
-                            cardType="People" 
+                            onCardClick={onPersonClick}
+                            playerITurn={gameState.isPlayerITurn}
+                            isTurnStarted={gameState.isTurnStarted}
+                            cardType="Persons" 
                             attribute="Height" 
-                            name={people.name} 
-                            attrValue={people.height} 
-                            player={people.index}
+                            name={persons.name} 
+                            attrValue={persons.height}
+                            player={index}
                         />
                     </div>
                 )
             )}
             </div>
             
-            <div><h2>{`Player ${gameState.playerITurn ? 'I': 'II'} chooses card`}</h2></div>
+            {gameState.starships.length ? 
+                <div><h2>
+                    {`Player ${gameState.isPlayerITurn ? 'I': 'II'} chooses card`}
+                </h2></div> :
+                ''
+            }
 
-            <Buttonn callback={(startOver)} />
+            <Button callback={(onTurnStart)} text="Next turn" />
 
-            {/* <button onClick={clickedGame}>
-                Clicked game
-            </button> */}
-            <div></div>
+            <Button callback={(startOver)} text="Start New Game" />
         </GamePage>
-    );
+    )
 }
 
 export default Game

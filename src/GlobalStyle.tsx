@@ -17,6 +17,10 @@ const GlobalStyle = createGlobalStyle`
         font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
     }
     
+    a {
+        color: #61dafb;
+    }
+
     button {
         color: white;
     }
