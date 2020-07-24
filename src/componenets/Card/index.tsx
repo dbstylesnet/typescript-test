@@ -4,26 +4,25 @@ import CardStyles from './styles'
 interface PlayerProps{
     isTurnStarted: boolean,
     playerITurn: boolean, 
-    cardType: string,
+    cardType?: string,
     attribute: string,
     attrValue: number,
     name: string,
     player: number,
     onCardClick?: (x: any) => void,
 }
-
-const Card = (props: PlayerProps) => {
-    return <CardStyles>
-        <span onClick={props.isTurnStarted ? props.onCardClick : undefined}>
+const Card = ({ isTurnStarted, playerITurn, attribute, attrValue, name, player, onCardClick }: PlayerProps) => {
+    return <CardStyles onClick={isTurnStarted ? onCardClick : undefined}>
             <div></div>
-            Name: {props.name}
+            Name: {name}
             <div></div>
-            {props.attribute}: 
-            {!props.isTurnStarted || 
-                (props.player === 0 && props.playerITurn) ||
-                (props.player === 1 && !props.playerITurn) ?
-            props.attrValue : '?'}
-        </span>
+            {attribute}: 
+            {!isTurnStarted || 
+                (player === 0 && playerITurn) ||
+                    (player === 1 && !playerITurn) ?
+                        attrValue : 
+                        '?'
+            }
     </CardStyles>
 }
 

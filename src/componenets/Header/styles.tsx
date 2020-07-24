@@ -12,6 +12,15 @@ const HeaderStyles = styled.div`
         color: white;
     }
 
+    .history-link {
+        display: block;
+        font-size: 15px;
+        text-transform: uppercase;
+        position: absolute;
+        top: 10%;
+        right: 20%;
+    }
+
     .score {
         border: 1px solid #61dafb;
         width: 200px;

@@ -2,15 +2,14 @@ import React from 'react'
 import ButtonStyles from './styles'
 
 type BtnProps = {
-    callback?: any,
+    callback: any,
     text: string,
 }
 
-const Button:React.FC<BtnProps> = (({ callback, text }) => (
-        <ButtonStyles onClick={callback}>
+const Button = ({ callback, text }: BtnProps) => {
+    return <ButtonStyles onClick={callback}>
             {text}
         </ButtonStyles>
-    )
-)   
+}
 
 export default Button

@@ -28,10 +28,7 @@ interface GameState {
     persons: Persons[],
 }
 
-type GameProps = {}
-
-
-const Game: React.FC<GameProps> = () => {
+const Game = () => {
     const { loading, error, data } = useQuery(GET_STARSHIPS_AND_PEOPLE)
     const [gameState, setGameState] = useState<GameState>(
         { 
@@ -119,9 +116,10 @@ const Game: React.FC<GameProps> = () => {
         
     return (
         <GamePage>
-            <Header 
-                scoreI={gameState.scoreI ? gameState.scoreI : 0} 
-                scoreII={gameState.scoreII ? gameState.scoreII : 0} 
+            <Header
+                scores={gameState.scores}
+                scoreI={gameState.scoreI} 
+                scoreII={gameState.scoreII} 
             />
             
             {gameState.starships.length ? <div>Starships</div> : ''}
