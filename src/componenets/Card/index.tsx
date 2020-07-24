@@ -1,9 +1,9 @@
 import React from 'react'
-import CardStyles from './styles'   
+import CardStyles from './styles'
 
-interface PlayerProps{
+interface PlayerProps {
     isTurnStarted: boolean,
-    playerITurn: boolean, 
+    playerITurn: boolean,
     cardType?: string,
     attribute: string,
     attrValue: number,
@@ -13,16 +13,16 @@ interface PlayerProps{
 }
 const Card = ({ isTurnStarted, playerITurn, attribute, attrValue, name, player, onCardClick }: PlayerProps) => {
     return <CardStyles onClick={isTurnStarted ? onCardClick : undefined}>
-            <div></div>
+        <div></div>
             Name: {name}
-            <div></div>
-            {attribute}: 
-            {!isTurnStarted || 
-                (player === 0 && playerITurn) ||
-                    (player === 1 && !playerITurn) ?
-                        attrValue : 
-                        '?'
-            }
+        <div></div>
+        {attribute}:
+            {!isTurnStarted ||
+            (player === 0 && playerITurn) ||
+            (player === 1 && !playerITurn) ?
+            attrValue :
+            '?'
+        }
     </CardStyles>
 }
 

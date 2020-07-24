@@ -1,21 +1,24 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import HistoryPage from './styles'
+import { HistoryContext } from '../../HistoryContext'
 
-interface HistoryProps {
-    scores?: string[],
+interface Scores {
+    scores?: string,
 }
 
-const History = ({ scores }: HistoryProps) => {
+const History = () => {
+    const { historyScores } = useContext(HistoryContext)
+
     return <HistoryPage>
         <header className="header">
             History
         </header>
         <ul>
-        {scores ?
-            scores.map(score => (
-                    <li>{score}</li>
-                ))
-            : 'none'
+            {historyScores.length > 0 ?
+                historyScores.map((scores: Scores, index: number) => {
+                    return <div key={index}>{scores}</div>
+                }) :
+                ''
             }
         </ul>
     </HistoryPage>

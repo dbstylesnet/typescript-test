@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import GamePage from './styles';
 import { useQuery } from '@apollo/client'
 import { GET_STARSHIPS_AND_PEOPLE } from '../../consts'
 import Card from '../../componenets/Card'
 import Header from '../../componenets/Header'
 import Button from '../../componenets/Button'
+import { HistoryContext } from '../../HistoryContext'
 
 interface Starship {
     id: string,
@@ -30,8 +31,10 @@ interface GameState {
 
 const Game = () => {
     const { loading, error, data } = useQuery(GET_STARSHIPS_AND_PEOPLE)
+    const { setHistoryScores } = useContext(HistoryContext)
+
     const [gameState, setGameState] = useState<GameState>(
-        { 
+        {
             scores: [],
             scoreI: 0,
             scoreII: 0,
@@ -40,17 +43,16 @@ const Game = () => {
             starships: [],
             persons: [],
         }
-    ) 
+    )
 
     const onTurnStart = () => {
         const assignedStarships = data.allStarships
             .slice()
-            .sort(()=> 0.5 - Math.random())
+            .sort(() => 0.5 - Math.random())
             .slice(0, 2)
-
         const assignedPersons = data.allPersons
             .slice()
-            .sort(()=> 0.5 - Math.random())
+            .sort(() => 0.5 - Math.random())
             .slice(0, 2)
 
         setGameState({
@@ -61,7 +63,7 @@ const Game = () => {
         })
     }
 
-    const startOver = () => {
+    const onStartOver = () => {
         setGameState({
             scores: [],
             scoreI: 0,
@@ -90,6 +92,7 @@ const Game = () => {
             isPlayerITurn: winner === "I" || (winner === "D" && gameState.isPlayerITurn),
             isTurnStarted: false,
         })
+        setHistoryScores(gameState.scores)
     }
 
     const onPersonClick = () => {
@@ -109,69 +112,69 @@ const Game = () => {
             isPlayerITurn: winner === "I" || (winner === "D" && gameState.isPlayerITurn),
             isTurnStarted: false,
         })
+        setHistoryScores(gameState.scores)
     }
 
     if (loading) return <p>Loading</p>
     if (error) return <p>Error</p>
-        
+
     return (
         <GamePage>
             <Header
                 scores={gameState.scores}
-                scoreI={gameState.scoreI} 
-                scoreII={gameState.scoreII} 
+                scoreI={gameState.scoreI}
+                scoreII={gameState.scoreII}
             />
-            
+
             {gameState.starships.length ? <div>Starships</div> : ''}
             <div className="cards-container">
-            {gameState.starships && gameState.starships
-                .map((starship: Starship, index:number) => (
-                    <div key={starship.id} className="starships"> 
-                        <Card
-                            onCardClick={onStarshipClick}
-                            playerITurn={gameState.isPlayerITurn}
-                            isTurnStarted={gameState.isTurnStarted}
-                            cardType="Starship" 
-                            attribute="Drive" 
-                            name={starship.name} 
-                            attrValue={starship.hyperdriveRating}
-                            player={index}
-                        />
-                    </div>
-                )
-            )}
+                {gameState.starships && gameState.starships
+                    .map((starship: Starship, index: number) => (
+                        <div key={starship.id} className="starships">
+                            <Card
+                                onCardClick={onStarshipClick}
+                                playerITurn={gameState.isPlayerITurn}
+                                isTurnStarted={gameState.isTurnStarted}
+                                cardType="Starship"
+                                attribute="Drive"
+                                name={starship.name}
+                                attrValue={starship.hyperdriveRating}
+                                player={index}
+                            />
+                        </div>
+                    )
+                    )}
             </div>
-                    
+
             {gameState.persons.length ? <div>Persons</div> : ''}
             <div className="cards-container">
-            {gameState.persons && gameState.persons
-                .map((persons: Persons, index:number) => (
-                    <div key={persons.id} className="persons"> 
-                        <Card
-                            onCardClick={onPersonClick}
-                            playerITurn={gameState.isPlayerITurn}
-                            isTurnStarted={gameState.isTurnStarted}
-                            cardType="Persons" 
-                            attribute="Height" 
-                            name={persons.name} 
-                            attrValue={persons.height}
-                            player={index}
-                        />
-                    </div>
-                )
-            )}
+                {gameState.persons && gameState.persons
+                    .map((persons: Persons, index: number) => (
+                        <div key={persons.id} className="persons">
+                            <Card
+                                onCardClick={onPersonClick}
+                                playerITurn={gameState.isPlayerITurn}
+                                isTurnStarted={gameState.isTurnStarted}
+                                cardType="Persons"
+                                attribute="Height"
+                                name={persons.name}
+                                attrValue={persons.height}
+                                player={index}
+                            />
+                        </div>
+                    )
+                    )}
             </div>
-            
-            {gameState.starships.length ? 
+
+            {gameState.starships.length ?
                 <div><h2>
-                    {`Player ${gameState.isPlayerITurn ? 'I': 'II'} chooses card`}
+                    {`Player ${gameState.isPlayerITurn ? 'I' : 'II'} chooses card`}
                 </h2></div> :
                 ''
             }
 
             <Button callback={(onTurnStart)} text="Next turn" />
-
-            <Button callback={(startOver)} text="Start New Game" />
+            <Button callback={(onStartOver)} text="Start New Game" />
         </GamePage>
     )
 }

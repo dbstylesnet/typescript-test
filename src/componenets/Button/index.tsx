@@ -8,8 +8,8 @@ type BtnProps = {
 
 const Button = ({ callback, text }: BtnProps) => {
     return <ButtonStyles onClick={callback}>
-            {text}
-        </ButtonStyles>
+        {text}
+    </ButtonStyles>
 }
 
 export default Button
