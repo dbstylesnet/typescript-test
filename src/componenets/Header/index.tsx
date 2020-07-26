@@ -1,6 +1,6 @@
 import React from 'react'
 import HeaderStyles from './styles'
-import { Link } from 'react-router-dom'
+import { BrowserRouter, Link } from 'react-router-dom'
 
 type HeaderProps = {
     scores?: string[],
@@ -13,9 +13,11 @@ const Header = ({ scores, scoreI, scoreII }: HeaderProps) => {
         <header className="header">
             Top Trumps
                 <div className="history-link">
-                <Link to="/history" >
-                    <div>Results</div>
-                </Link>
+                <BrowserRouter>
+                    <Link to="/history" >
+                        <div>Results</div>
+                    </Link>
+                </BrowserRouter>
             </div>
         </header>
         <div className="score">

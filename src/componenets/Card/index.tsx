@@ -17,7 +17,7 @@ const Card = ({ isTurnStarted, playerITurn, attribute, attrValue, name, player, 
             Name: {name}
         <div></div>
         {attribute}:
-            {!isTurnStarted ||
+        {!isTurnStarted ||
             (player === 0 && playerITurn) ||
             (player === 1 && !playerITurn) ?
             attrValue :

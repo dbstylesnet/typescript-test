@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render loading state initially 1`] = `
+<p>
+  Loading
+</p>
+`;
+
+exports[`should render loading state initially 2`] = `
+<p>
+  Loading
+</p>
+`;

@@ -3,23 +3,23 @@ import GlobalStyle from './GlobalStyle';
 import Game from './pages/Game'
 import History from './pages/History'
 import { ApolloProvider } from '@apollo/client'
-import { CLIENT } from './consts'
+import { client } from './config'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { HistoryContext } from './HistoryContext'
 
 const TopTrumps = () => {
-    const [historyScores, setHistoryScores] = useState([])
+    const [historyScores, setHistoryScores] = useState()
 
-    return <ApolloProvider client={CLIENT}>
+    return <ApolloProvider client={client}>
         <GlobalStyle />
-        <Router>
-            <Switch>
-                <HistoryContext.Provider value={{ historyScores, setHistoryScores }}>
+        <HistoryContext.Provider value={{ historyScores, setHistoryScores }}>
+            <Router>
+                <Switch>
                     <Route path="/history" component={History} />
                     <Route path="/" exact component={Game} />
-                </HistoryContext.Provider>
-            </Switch>
-        </Router>
+                </Switch>
+            </Router>
+        </HistoryContext.Provider>
     </ApolloProvider>
 }
 

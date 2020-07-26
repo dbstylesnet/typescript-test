@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import GamePage from './styles';
 import { useQuery } from '@apollo/client'
-import { GET_STARSHIPS_AND_PEOPLE } from '../../consts'
+import { GET_STARSHIPS_AND_PEOPLE } from '../../config'
 import Card from '../../componenets/Card'
 import Header from '../../componenets/Header'
 import Button from '../../componenets/Button'
