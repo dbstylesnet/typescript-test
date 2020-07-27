@@ -1,16 +1,19 @@
 import React from 'react'
-import ReactDOM from "react-dom";
+import { shallow } from 'enzyme'
 import Header from '../../../componenets/Header'
 
-it('should render a Header component correctly', () => {
-    const HeaderProps = {
-        scoreI: 0, 
-        scoreII: 0, 
-        scores: ["I", "II" , "D"],
-    }
-    const div = document.createElement("div");
-    ReactDOM.render(<Header {...HeaderProps} />, div);
-    ReactDOM.unmountComponentAtNode(div);
-});
+const headerProps = {
+    scores: ["I", "II", "II"],
+    scoreI: 1,
+    scoreII: 2,
+}
 
-
+it('shallow renders without crashing', () => {
+    const wrapper = shallow(<Header {...headerProps} />)
+    expect(wrapper).toMatchSnapshot();
+    expect(wrapper.find("header")).toBeTruthy() 
+    expect(wrapper.find(".title")).toBeTruthy()
+    expect(wrapper.containsMatchingElement(<li>I: 1</li>)).toBeTruthy()
+    expect(wrapper.containsMatchingElement(<li>II: 2</li>)).toBeTruthy()
+})
+ 

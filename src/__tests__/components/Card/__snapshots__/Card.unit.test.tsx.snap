@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`shallow renders with turnStarted and playerITurn 1`] = `ShallowWrapper {}`;
+
+exports[`shallow renders with turnStarted and playerITurn 2`] = `ShallowWrapper {}`;
+
+exports[`shallow renders with turntarted and playerITurn 1`] = `ShallowWrapper {}`;
+
+exports[`shallow renders without crashing 1`] = `ShallowWrapper {}`;
+
+exports[`shallow renders without crashing wit 1`] = `ShallowWrapper {}`;
+
+exports[`shallow renders without crashing with  1`] = `ShallowWrapper {}`;
+
+exports[`shallow renders without crashing with turn started and  1`] = `ShallowWrapper {}`;
+
+exports[`shallow renders without crashing with turn started and player 1`] = `ShallowWrapper {}`;
+
+exports[`shallow renders without crashing with turn started and playerITurn 1`] = `ShallowWrapper {}`;
+
+exports[`shallow renders without crashing with turn started and playerITurn 2`] = `ShallowWrapper {}`;
+
+exports[`shallow renders without turnStarted and playerITurn 1`] = `ShallowWrapper {}`;
+
+exports[`shallow renders without turnStarted and with playerITurn 1`] = `ShallowWrapper {}`;
+
+exports[`shallow renders withstarted and playerITurn 1`] = `ShallowWrapper {}`;

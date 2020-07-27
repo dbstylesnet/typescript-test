@@ -3,7 +3,6 @@ import renderer from "react-test-renderer"
 import { MockedProvider } from "@apollo/client/testing"
 import { GET_STARSHIPS_AND_PEOPLE } from "../../../config"
 import Game from "../../../pages/Game"
-import wait from "waait"
 
 const mocks = [
     {
@@ -51,7 +50,7 @@ const mocks = [
     },
 ]
 
-it("should render loading state initially", () => {
+it("should render loading state", () => {
     const game = renderer.create(
         <MockedProvider mocks={mocks}>
             <Game />
@@ -65,21 +64,3 @@ it("should render loading state initially", () => {
     </p>
   `)
 })
-
-it("should render Game page without error using provided mocks", () => {
-    renderer.create(
-        <MockedProvider mocks={mocks} addTypename={false}>
-            <Game />
-        </MockedProvider>
-    )
-})
-
-
-it('should render game', async () => {
-    const game = renderer.create(
-        <MockedProvider mocks={mocks} addTypename={false}>
-            <Game />
-        </MockedProvider>,
-    )
-})
-

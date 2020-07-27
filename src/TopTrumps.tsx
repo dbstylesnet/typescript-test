@@ -12,14 +12,14 @@ const TopTrumps = () => {
 
     return <ApolloProvider client={client}>
         <GlobalStyle />
-        <HistoryContext.Provider value={{ historyScores, setHistoryScores }}>
-            <Router>
-                <Switch>
-                    <Route path="/history" component={History} />
+        <Router>
+            <Switch>
+                <HistoryContext.Provider value={{ historyScores, setHistoryScores }}>
+                    <Route path="/history" exact component={History} />
                     <Route path="/" exact component={Game} />
-                </Switch>
-            </Router>
-        </HistoryContext.Provider>
+                </HistoryContext.Provider>
+            </Switch>
+        </Router>
     </ApolloProvider>
 }
 

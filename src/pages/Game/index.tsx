@@ -175,6 +175,7 @@ const Game = () => {
 
             <Button callback={(onTurnStart)} text="Next turn" />
             <Button callback={(onStartOver)} text="Start New Game" />
+            <span>made by dbstyles</span>
         </GamePage>
     )
 }

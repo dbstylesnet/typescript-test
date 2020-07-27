@@ -1,7 +1,7 @@
 import React from 'react'
 import CardStyles from './styles'
 
-interface PlayerProps {
+interface CardProps {
     isTurnStarted: boolean,
     playerITurn: boolean,
     cardType?: string,
@@ -11,18 +11,20 @@ interface PlayerProps {
     player: number,
     onCardClick?: (x: any) => void,
 }
-const Card = ({ isTurnStarted, playerITurn, attribute, attrValue, name, player, onCardClick }: PlayerProps) => {
-    return <CardStyles onClick={isTurnStarted ? onCardClick : undefined}>
+
+const Card = ({ isTurnStarted, playerITurn, attribute, attrValue, name, player, onCardClick }: CardProps) => {
+    return <CardStyles onClick={isTurnStarted ? onCardClick : undefined} className="card">
         <div></div>
-            Name: {name}
+        <span>Name: {name}</span>
         <div></div>
-        {attribute}:
+        <span>{attribute}:
         {!isTurnStarted ||
             (player === 0 && playerITurn) ||
             (player === 1 && !playerITurn) ?
             attrValue :
             '?'
         }
+        </span>
     </CardStyles>
 }
 
