@@ -18,11 +18,12 @@ const Card = ({ isTurnStarted, playerITurn, attribute, attrValue, name, player, 
         <span>Name: {name}</span>
         <div></div>
         <span>{attribute}:
-        {!isTurnStarted ||
+        {
+            !isTurnStarted ||
             (player === 0 && playerITurn) ||
             (player === 1 && !playerITurn) ?
-            attrValue :
-            '?'
+                attrValue :
+                '?'
         }
         </span>
     </CardStyles>
