@@ -1,7 +1,16 @@
 # Top Trumps game
-This is basic Typescript React project, utilising React functional components with hooks.
+Typescript React project, utilising React functional components with hooks.
 
-## In order to start:
+### Tech stack:
+* Typescript
+* React (hooks)
+* GraphQL with Apollo (https://swapi.graph.cool/)
+* Modern UI (styled-components, flexbox)
+* Enzyme tests
+
+![alt text](https://github.com/dbstylesnet/top-trumps-game/blob/master/screenshot.png)
+
+## In order to start game locally:
 
 ### `yarn` command in project folder
 Resolve packages
